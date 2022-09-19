@@ -37,7 +37,6 @@ export function ModuleSynchronizer<T extends SynchronizerInput>(
       };
     },
     apply(_target, thisArg, args) {
-      console.log("apply", "trying to call directly", args);
       if (loadedModule) {
         return (loadedModule as any).apply(thisArg, args);
       }
