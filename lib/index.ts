@@ -12,9 +12,9 @@ export function ModuleSynchronizer<T extends SynchronizerInput>(
       queue.foreach((queue) => {
         const [propName, args, resolve] = queue;
         if (propName === "self") {
-          return resolve((module as any).apply(null, args));
+          return resolve((module as any)(...args));
         }
-        resolve((module[propName as keyof T] as any).apply(null, args));
+        resolve((module[propName as keyof T] as any)(...args));
       });
     })
     .catch((error) => {
@@ -29,7 +29,7 @@ export function ModuleSynchronizer<T extends SynchronizerInput>(
       return (...args: any[]) => {
         return new Promise((resolve, reject) => {
           if (loadedModule) {
-            resolve((loadedModule[prop as keyof T] as any).apply(null, args));
+            resolve((loadedModule[prop as keyof T] as any)(...args));
           } else {
             queue.enqueue([prop as any, args as any, resolve, reject]);
           }
